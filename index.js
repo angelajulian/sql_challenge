@@ -3,8 +3,8 @@ const mysql2 = require("mysql2");
 const cTable = require("console.table");
 const connection = require("./db/connection.js");
 
-async function quit() {
-  await inquirer
+function quit() {
+  inquirer
     .prompt([
       {
         type: "confirm",
@@ -53,7 +53,7 @@ function viewEmployees() {
 }
 
 function addDepartment() {
-  viewDepartments();
+  // viewDepartments();
   inquirer
     .prompt([
       {
@@ -68,6 +68,7 @@ function addDepartment() {
         "INSERT INTO `department`(department_name) VALUES (?)",
         [result.department]
       );
+      quit();
     });
 }
 
@@ -103,11 +104,12 @@ function addRole() {
         "INSERT INTO `employee_role`(title, salary, department_id) VALUES (?, ?, ?)",
         [result.title, result.salary, result.department]
       );
+      quit();
     });
 }
 
 function addEmployee() {
-  viewEmployees();
+  // viewEmployees();
   inquirer
     .prompt([
       {
@@ -207,12 +209,15 @@ function startMenu() {
     .then((result) => {
       if (result.whatDo === "view all departments") {
         viewDepartments();
+        quit();
       }
       if (result.whatDo === "view all roles") {
         viewRoles();
+        quit();
       }
       if (result.whatDo === "view all employees") {
         viewEmployees();
+        quit();
       }
       if (result.whatDo === "add a department") {
         addDepartment();
@@ -225,9 +230,6 @@ function startMenu() {
       }
       if (result.whatDo === "update an employee role") {
         updateEmployeeRole();
-      }
-      if (result.whatDo === "quit") {
-        quit();
       }
     });
 }
